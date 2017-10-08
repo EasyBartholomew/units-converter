@@ -36,19 +36,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dragablz">
-      <HintPath>..\..\MaterialDesignDll\Dragablz.dll</HintPath>
+      <HintPath>..\MaterialDesignDll\Dragablz.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro">
-      <HintPath>..\..\MaterialDesignDll\MahApps.Metro.dll</HintPath>
+      <HintPath>..\MaterialDesignDll\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignColors">
-      <HintPath>..\..\MaterialDesignDll\MaterialDesignColors.dll</HintPath>
+      <HintPath>..\MaterialDesignDll\MaterialDesignColors.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignThemes.MahApps">
-      <HintPath>..\..\MaterialDesignDll\MaterialDesignThemes.MahApps.dll</HintPath>
+      <HintPath>..\MaterialDesignDll\MaterialDesignThemes.MahApps.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf">
-      <HintPath>..\..\MaterialDesignDll\MaterialDesignThemes.Wpf.dll</HintPath>
+      <HintPath>..\MaterialDesignDll\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -68,9 +68,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFToolkit.Extended">
-      <HintPath>..\..\WPFToolkitDll\WPFToolkit.Extended.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -121,7 +118,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Converter\Converter\Converter.csproj">
+    <ProjectReference Include="..\Converter\Converter.csproj">
       <Project>{a9d72d7a-9024-492c-bfbe-bef889f75e56}</Project>
       <Name>Converter</Name>
     </ProjectReference>
