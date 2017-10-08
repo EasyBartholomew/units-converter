@@ -1,0 +1,107 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Units Converter" Height="350" Width="525">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="62*"/>
+            <ColumnDefinition Width="53*"/>
+            <ColumnDefinition Width="93*"/>
+            <ColumnDefinition Width="105*"/>
+            <ColumnDefinition Width="49*"/>
+            <ColumnDefinition Width="87*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45*"/>
+            <RowDefinition Height="35*"/>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="37*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="44*"/>
+            <RowDefinition Height="72*"/>
+        </Grid.RowDefinitions>
+
+        <!--units combo box-->
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="Unit"
+                  IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
+                  ItemsSource="{Binding Units}"
+                  SelectedItem="{Binding SelectedUnit}">
+        </ComboBox>
+
+        <!--from dimention combo box-->
+        <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="From"
+                  IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
+                  ItemsSource="{Binding Dimentions}"
+                  SelectedItem="{Binding FromDimention}">
+        </ComboBox>
+
+        <!--to dimention combo box-->
+        <ComboBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="To"
+                  IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
+                  ItemsSource="{Binding Dimentions}"
+                  SelectedItem="{Binding ToDimention}">
+        </ComboBox >
+
+        <!--swap button-->
+        <Button Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                        Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                        ToolTip="Swap sides"
+                        Command="{Binding SwapCommand}">
+            <materialDesign:PackIcon Kind="Autorenew"  />
+        </Button>
+        
+        <!--value to convert from-->
+        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" >
+            <TextBox.Text>
+                <Binding Path="FromValue" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <local:OnlyDigitsValidationRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <!--result of convertion-->
+        <TextBox Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="False"
+                   Text="{Binding ToValue}"/>
+
+        <!--paste from clipboard button-->
+        <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                    ToolTip="Paste From clipboard"
+                Command="{Binding FromClipboardCommand}"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+            <materialDesign:PackIcon Kind="ContentPaste"/>
+        </Button>
+
+        <!--copy result to clipboard button-->
+        <Button Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" 
+                Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                    ToolTip="Copy to clipboard"
+                Command="{Binding ToClipboardCommand}"
+                HorizontalAlignment="Center" VerticalAlignment="Center">
+            <materialDesign:PackIcon Kind="ContentCopy"/>
+        </Button>
+    </Grid>
+</Window>
