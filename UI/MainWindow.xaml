@@ -62,14 +62,14 @@
                   IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
                   ItemsSource="{Binding Dimentions}"
                   SelectedItem="{Binding ToDimention}">
-        </ComboBox >
+        </ComboBox>
 
         <!--swap button-->
         <Button Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         ToolTip="Swap sides"
                         Command="{Binding SwapCommand}">
-            <materialDesign:PackIcon Kind="Autorenew"  />
+            <materialDesign:PackIcon Kind="SwapHorizontal"  />
         </Button>
         
         <!--value to convert from-->

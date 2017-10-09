@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ControlzEx;
 using System.Windows.Input;
 using System.Windows;
 
