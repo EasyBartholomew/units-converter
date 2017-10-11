@@ -36,6 +36,21 @@ namespace UI
 
         #region Props
 
+
+        private IEnumerable<ConvertedDimention> _convertedList;
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<ConvertedDimention> ConvertedList
+        {
+            get { return _convertedList; }
+            set
+            {
+                _convertedList = value;
+                OnPropertyChanged("ConvertedList");
+            }
+        }
+
         private IEnumerable<string> _units;
 
         /// <summary>
@@ -76,6 +91,7 @@ namespace UI
             {
                 _selectedUnit = value;
                 SetSelectedUnitDimetions();
+                UpdateCalculatedList();
             }
         }
 
@@ -90,7 +106,8 @@ namespace UI
             {
                 _fromDimention = value;
                 OnPropertyChanged("FromDimention");
-                AutoCalculate();
+                UpdateCalculationSelected();
+                UpdateCalculatedList();
             }
         }
 
@@ -105,7 +122,7 @@ namespace UI
             {
                 _toDimention = value;
                 OnPropertyChanged("ToDimention");
-                AutoCalculate();
+                UpdateCalculationSelected();
 
             }
         }
@@ -135,7 +152,8 @@ namespace UI
             {
                 _fromValue = value;
                 OnPropertyChanged("FromValue");
-                AutoCalculate();
+                UpdateCalculationSelected();
+                UpdateCalculatedList();
             }
         }
 
@@ -176,10 +194,9 @@ namespace UI
             });
 
             // Implement clipboard copy action
-            ToClipboardCommand = new Command(() =>
+            ToClipboardCommand = new CommandString((text) =>
             {
-                if(ToValue != null)
-                    Clipboard.SetText(ToValue);
+                Clipboard.SetText(text);
             });
 
             // Implement clipboard paste action
@@ -202,13 +219,49 @@ namespace UI
                 Dimentions = UnitsConverter.UnitsDimensionsMap[SelectedUnit];
         }
 
-        /// <summary>
-        /// Try calculate convertion
-        /// </summary>
-        private void AutoCalculate()
+        private void UpdateCalculatedList()
         {
             double fromValue = 0;
 
+            // If data not correct yet
+            if (SelectedUnit == null ||
+                FromDimention == null ||
+                !double.TryParse(FromValue, out fromValue) ||
+                fromValue == 0)
+            {
+                ConvertedList = null;
+                return;
+            }
+
+
+            // Convert all
+            List<ConvertedDimention> list = new List<ConvertedDimention>();
+            foreach (var d in Dimentions)
+            {
+                bool isSuccess2;
+
+                // Convert
+                var value = UnitsConverter.Convert(SelectedUnit,
+                                                 FromDimention,
+                                                 d,
+                                                 fromValue,
+                                                 out isSuccess2).ToString();
+                if (!isSuccess2)
+                    value = "---";
+
+                list.Add(new ConvertedDimention(d, value));
+            }
+
+            ConvertedList = list;
+
+        }
+
+        /// <summary>
+        /// Try calculate convertion
+        /// </summary>
+        private void UpdateCalculationSelected()
+        {
+            double fromValue = 0;
             // If data not correct yet
             if (SelectedUnit == null ||
                 FromDimention == null ||
@@ -228,6 +281,8 @@ namespace UI
                                              ToDimention,
                                              fromValue,
                                              out isSuccess).ToString();
+
+
             Message = isSuccess ? "OK" : "Error";
 
         }

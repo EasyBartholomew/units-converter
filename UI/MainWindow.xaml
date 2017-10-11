@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:UI"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Units Converter" Height="350" Width="525">
+        Title="Units Converter" Height="500" Width="480"
+        x:Name="window">
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
@@ -23,85 +24,140 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
+    <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="62*"/>
-            <ColumnDefinition Width="53*"/>
-            <ColumnDefinition Width="93*"/>
-            <ColumnDefinition Width="105*"/>
-            <ColumnDefinition Width="49*"/>
-            <ColumnDefinition Width="87*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="458*"/>
+            <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45*"/>
-            <RowDefinition Height="35*"/>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="37*"/>
-            <RowDefinition Height="43*"/>
-            <RowDefinition Height="44*"/>
-            <RowDefinition Height="72*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="454*"/>
+            <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="175*"/>
+                <ColumnDefinition Width="105*"/>
+                <ColumnDefinition Width="193*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="35*"/>
+                <RowDefinition Height="38*"/>
+                <RowDefinition Height="32*"/>
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="218*"/>
+            </Grid.RowDefinitions>
 
-        <!--units combo box-->
-        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="Unit"
+            <!--units combo box-->
+            <ComboBox Grid.Row="1" Margin="2"
+                  materialDesign:HintAssist.Hint="Unit"
                   IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
                   ItemsSource="{Binding Units}"
-                  SelectedItem="{Binding SelectedUnit}">
-        </ComboBox>
+                  SelectedItem="{Binding SelectedUnit}"/>
 
-        <!--from dimention combo box-->
-        <ComboBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="From"
+            <!--from dimention combo box-->
+            <ComboBox Grid.Row="2" Grid.Column="0"
+                  materialDesign:HintAssist.Hint="From"
                   IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
                   ItemsSource="{Binding Dimentions}"
-                  SelectedItem="{Binding FromDimention}">
-        </ComboBox>
+                  SelectedItem="{Binding FromDimention}"/>
 
-        <!--to dimention combo box-->
-        <ComboBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="To"
-                  IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
-                  ItemsSource="{Binding Dimentions}"
-                  SelectedItem="{Binding ToDimention}">
-        </ComboBox>
-
-        <!--swap button-->
-        <Button Grid.Column="3" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" 
+            <!--swap button-->
+            <Button Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" 
+                VerticalAlignment="Center" HorizontalAlignment="Center" 
                         Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
                         ToolTip="Swap sides"
                         Command="{Binding SwapCommand}">
-            <materialDesign:PackIcon Kind="SwapHorizontal"  />
-        </Button>
-        
-        <!--value to convert from-->
-        <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" >
-            <TextBox.Text>
-                <Binding Path="FromValue" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <local:OnlyDigitsValidationRule />
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+                <materialDesign:PackIcon Kind="SwapHorizontal"  />
+            </Button>
 
-        <!--result of convertion-->
-        <TextBox Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2" IsEnabled="False"
-                   Text="{Binding ToValue}"/>
+            <!--to dimention combo box-->
+            <ComboBox Grid.Row="2" Grid.Column="2" 
+                  materialDesign:HintAssist.Hint="To"
+                  IsEditable="True" materialDesign:HintAssist.HintOpacity=".26"
+                  ItemsSource="{Binding Dimentions}"
+                  SelectedItem="{Binding ToDimention}"/>
 
-        <!--paste from clipboard button-->
-        <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignRaisedLightButton}" 
+
+            <!--value to convert from-->
+            <TextBox Grid.Row="3" >
+                <TextBox.Text>
+                    <Binding Path="FromValue" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:OnlyDigitsValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <!--result of convertion-->
+            <TextBox Grid.Row="3" Grid.Column="2"
+                 IsEnabled="False" Text="{Binding ToValue}" />
+
+            <!--paste from clipboard button-->
+            <Button Grid.Row="4" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedLightButton}" 
                     ToolTip="Paste From clipboard"
                 Command="{Binding FromClipboardCommand}"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
-            <materialDesign:PackIcon Kind="ContentPaste"/>
-        </Button>
+                <materialDesign:PackIcon Kind="ContentPaste"/>
+            </Button>
 
-        <!--copy result to clipboard button-->
-        <Button Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2" 
+            <!--copy result to clipboard button-->
+            <Button Grid.Row="4" Grid.Column="2" 
                 Style="{StaticResource MaterialDesignRaisedLightButton}" 
-                    ToolTip="Copy to clipboard"
                 Command="{Binding ToClipboardCommand}"
+                CommandParameter="{Binding ToValue}"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
-            <materialDesign:PackIcon Kind="ContentCopy"/>
-        </Button>
+                <Button.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Copy '"/>
+                        <TextBlock Text="{Binding ToValue}"/>
+                        <TextBlock Text="' To Clipboard"/>
+                    </StackPanel>
+                </Button.ToolTip>
+                <materialDesign:PackIcon Kind="ContentCopy"/>
+            </Button>
+
+            <!--all dimnetion list-->
+            <ScrollViewer Grid.Column="0" Margin="15" Grid.Row="5" Grid.ColumnSpan="3">
+                <ItemsControl  ItemsSource="{Binding ConvertedList}"
+                      >
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:ConvertedDimention}">
+                            <Border x:Name="Border" Padding="0.7" BorderThickness="0.5" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="10,0,0,0" FontWeight="Bold" Text="{Binding Dimension}"
+                                       VerticalAlignment="Center"/>
+                                    <TextBlock Margin="2,0,0,0" Grid.Column="1" Text="{Binding Value}"
+                                       VerticalAlignment="Center"/>
+                                    <Grid Grid.Column="2">
+                                        <Button Style="{StaticResource MaterialDesignRaisedLightButton}" 
+                                             Command="{Binding ElementName=window,
+                                                        Path=DataContext.ToClipboardCommand}"   
+                                                CommandParameter="{Binding Value}">
+                                            <Button.ToolTip>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Copy '"/>
+                                                    <TextBlock Text="{Binding Value}"/>
+                                                    <TextBlock Text="' To Clipboard"/>
+                                                </StackPanel>
+                                            </Button.ToolTip>
+                                            <materialDesign:PackIcon Kind="ContentCopy" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
