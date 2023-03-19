@@ -6,11 +6,18 @@
         xmlns:local="clr-namespace:UI"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Units Converter" Height="500" Width="480"
+        Height="500" 
+        Width="480"
         x:Name="window">
+
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.Title>
+        <Binding Path="CurrentVersion" Mode="OneWay" StringFormat="Units Converter [{0}]"/>
+    </Window.Title>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

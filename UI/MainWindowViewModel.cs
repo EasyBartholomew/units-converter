@@ -1,13 +1,14 @@
-﻿using Converter;
-using System;
-using System.Collections;
+﻿using System;
+using Converter;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Timers;
 using System.Windows.Input;
 using System.Windows;
+using Squirrel;
+using Squirrel.Sources;
+using UI.Properties;
 
 namespace UI
 {
@@ -173,6 +174,8 @@ namespace UI
 
         #endregion
 
+        public string CurrentVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+
         #endregion
 
         #region Init
@@ -204,6 +207,50 @@ namespace UI
             {
                 FromValue = Clipboard.GetText();
             });
+
+            var updateChecker = new Timer
+            {
+                AutoReset = false,
+                Enabled = false,
+                Interval = 5000
+            };
+
+            updateChecker.Elapsed += OnCheckingUpdate;
+            updateChecker.Start();
+
+            try
+            {
+                Deploy.CreateProtocolEntries();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void OnCheckingUpdate(object sender, ElapsedEventArgs e)
+        {
+            Update();
+        }
+
+        private async void Update()
+        {
+            var hasConnection = await RemoteUtils.CheckForInternetConnectionAsync();
+
+            if (!hasConnection)
+                return;
+
+            using (var manager = new UpdateManager(new GithubSource(Resources.GithubUrl, null, false)))
+            {
+                try
+                {
+                    await manager.UpdateApp();
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
         }
 
         #endregion
